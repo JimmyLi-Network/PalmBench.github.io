@@ -1,6 +1,6 @@
 # PalmBench: A Comprehensive Benchmark of Compressed Large Language Models on Mobile Platforms
 
-![PalmBench](./teaser2.pdf)
+![PalmBench](./teaser2.png)
 
 ## Overview
 
