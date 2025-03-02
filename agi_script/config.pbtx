@@ -1,0 +1,99 @@
+buffers {
+  size_kb: 131072
+  fill_policy: RING_BUFFER
+}
+buffers {
+  size_kb: 4096
+  fill_policy: RING_BUFFER
+}
+data_sources {
+  config {
+    name: "linux.ftrace"
+    ftrace_config {
+      ftrace_events: "sched/sched_process_free"
+      ftrace_events: "task/task_newtask"
+      ftrace_events: "task/task_rename"
+      ftrace_events: "power/gpu_frequency"
+      ftrace_events: "gpu_mem/gpu_mem_total"
+      ftrace_events: "kmem/rss_stat"
+      buffer_size_kb: 8192
+      drain_period_ms: 250
+      compact_sched {
+        enabled: true
+      }
+    }
+  }
+}
+data_sources {
+  config {
+    name: "linux.process_stats"
+    target_buffer: 1
+    process_stats_config {
+      scan_all_processes_on_start: true
+    }
+  }
+}
+data_sources {
+  config {
+    name: "linux.process_stats"
+    process_stats_config {
+      proc_stats_poll_ms: 2000
+      proc_stats_cache_ttl_ms: 20000
+    }
+  }
+}
+data_sources {
+  config {
+    name: "gpu.renderstages"
+  }
+}
+data_sources {
+  config {
+    name: "VulkanAPI"
+  }
+}
+data_sources {
+  config {
+    name: "gpu.counters"
+    gpu_counter_config {
+      counter_period_ns: 1000000
+      counter_ids: 145
+      counter_ids: 1
+      counter_ids: 146
+      counter_ids: 3
+      counter_ids: 104
+    }
+  }
+}
+data_sources {
+  config {
+    name: "android.gpu.memory"
+  }
+}
+data_sources {
+  config {
+    name: "linux.sys_stats"
+    sys_stats_config {
+      meminfo_period_ms: 10
+      meminfo_counters: MEMINFO_MEM_TOTAL
+      meminfo_counters: MEMINFO_MEM_FREE
+      meminfo_counters: MEMINFO_BUFFERS
+      meminfo_counters: MEMINFO_CACHED
+      meminfo_counters: MEMINFO_SWAP_CACHED
+    }
+  }
+}
+data_sources {
+  config {
+    name: "android.power"
+    android_power_config {
+      battery_poll_ms: 250
+      battery_counters: BATTERY_COUNTER_CAPACITY_PERCENT
+      battery_counters: BATTERY_COUNTER_CHARGE
+      battery_counters: BATTERY_COUNTER_CURRENT
+      collect_power_rails: false
+      collect_energy_estimation_breakdown: false
+    }
+  }
+}
+flush_period_ms: 5000
